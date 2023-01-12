@@ -15,17 +15,15 @@ body {
     justify-content: center;
 }
 
-.containerPrincipal {
+.containerPrincipal {   
     width: 872px;
     display: flex;
-
     flex-wrap: wrap;
     margin: auto;
 }
 
 .containerCards {
-   
-    max-height: ;
+
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -33,12 +31,36 @@ body {
     margin-top: 20px;
 }
 
-.cards {
+.cards,
+.front,
+.back {
     width: 117px;
     height: 146px;
+    display: flex;
+    margin-bottom: 34px;
     border-radius: 5px;
+    position: relative;
+}
+
+.cards img {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.front {
     border: 1px solid #99CEA8;
     background-color: #A7E9AF;
+}
+
+.back {
+    border: 1px solid #99CEA8;
+    background-color: antiquewhite;
+}
+
+.card {
+
     display: flex;
-    margin-left: 20px;
-    margin-bottom: 34px;
+    position: absolute;
+    z-index: 2;
+}
