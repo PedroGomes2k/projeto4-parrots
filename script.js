@@ -153,8 +153,8 @@ function cartasCriadas(imagensSelecionadas) {
     back.className = 'back '
 
     // Adicionando imagens as faces da carta
-    front.style.backgroundImage = `url(../Imagens/pokebola.png)`
-    back.style.backgroundImage = `url(../Imagens/${imagensSelecionadas})`
+    front.style.backgroundImage = `url(../.Imagens/pokebola.png)`
+    back.style.backgroundImage = `url(../.Imagens/${imagensSelecionadas})`
 
     // Fazendo transformaçao de divs em filhos da div 'cards'
     cards.appendChild(front)
