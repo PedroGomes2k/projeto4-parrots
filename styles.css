@@ -40,7 +40,6 @@ body {
     margin-bottom: 34px;
     border-radius: 5px;
     position: relative;
-    transition: all 0.3s linear;
     transform-style: preserve-3d;
 }
 
@@ -48,17 +47,14 @@ body {
     margin-left: 20px;
 }
 
-.cards:hover {
-    transform: rotateY(180deg);
-}
-
-
 .front {
 
-    background-position: center;
+
     border: 1px solid #99CEA8;
     background-color: #A7E9AF;
     backface-visibility: hidden;
+
+
 
 }
 
@@ -66,6 +62,9 @@ body {
     border: 1px solid #99CEA8;
     background-color: #A7E9AF;
     transform: rotateY(180deg);
+    transition: all 0.3s linear;
+
+
 }
 
 
@@ -75,5 +74,39 @@ body {
     background-position: center;
     display: flex;
     position: absolute;
-    z-index: 2;
+    z-index: 1;
+}
+
+.rotacao {
+    transform: rotateY(180deg);
+    transition: all 0.3s linear;
+}
+
+@media (max-width: 335px) {
+
+
+    
+    .cabecalho {
+  
+        display: flex;
+        justify-content: center;
+        width: 312px;
+        text-align: center;
+        margin: ;
+    }
+
+    .containerCards {
+
+        width: 200px;
+        font-size: 36px;
+        justify-content: center;
+        margin-left: 50px;
+        margin-top: 200px;
+        flex-direction: column;
+    }
+    .cards{
+
+        margin: auto;
+        margin-bottom: 30px;
+    }
 }
