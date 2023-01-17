@@ -56,6 +56,7 @@ body {
     backface-visibility: hidden;
     background-size: 120px;
     background-position: center ;
+    z-index: 1;
 }
  
 .back {
@@ -73,12 +74,12 @@ body {
     background-position: center;
     display: flex;
     position: absolute;
-    z-index: 3;
+    
 }
 
 
 .rotacao {
-    transform: rotateY(-180deg);
+    transform: rotateY(180deg);
     transition: all 0.3s linear;
 }
 

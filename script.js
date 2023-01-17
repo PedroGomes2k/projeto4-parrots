@@ -1,4 +1,3 @@
-
 const containerDasCartas = document.querySelector('.containerCards')
 
 let primeiraCarta = ''
@@ -9,15 +8,18 @@ let numeroCarta = ''
 
 let cartasDaCaixa = []
 
+
 const imagensCartas = [
     'pikachu.png',
-    'snorlax.png',
     'charizard.png',
+    'snorlax.png',
     'squedel.png',
     'lucario.png',
     'infernape.png',
     'onix.png'
 ]
+
+
 
 function numerosPares() {
 
@@ -79,9 +81,69 @@ function jogabilidadeCartas() {
         cartasCriadas(imagensSelecionadas)
 
     })
+
 }
 
 jogabilidadeCartas()
+
+// Function para criar cartas
+function cartasCriadas(imagensSelecionadas) {
+
+    // Criaçao dos elementos dentro da div do html
+    const cards = document.createElement('div')
+    const front = document.createElement('div')
+    const back = document.createElement('div')
+
+    // Colocando nome de class para ultiliza-la e dar estilo
+    cards.className = 'cards'
+    front.className = 'front card'
+    back.className = 'back card '
+
+    // Adicionando imagens as faces da carta
+    front.style.backgroundImage = `url(../Imagens/pokebola.png)`
+    back.style.backgroundImage = `url(../Imagens/${imagensSelecionadas})`
+
+    // Fazendo transformaçao de divs em filhos da div 'cards'
+    cards.appendChild(front)
+    cards.appendChild(back)
+
+    // Ultilizar o evento para conseguir clicar em uma carta
+    cards.addEventListener('click', rotacaoCarta)
+    // Acrescentando atributos nas imagens para poder verificar se são iguais
+    cards.setAttribute('data-imagensSelecionada', imagensSelecionadas)
+
+    // Transformandno a div 'cards' em uma div filha
+    containerDasCartas.appendChild(cards)
+}
+
+function rotacaoCarta({ target }) {
+
+    // Ele ira procurar a div pai do elemento que foi clicado e adcionar a movimentaçao da carta
+    if (target.parentNode.className.includes('rotacao')) {
+
+    }
+    
+
+    // Ele vai pegar a primeira carta e rotaciona-la e vai salvar o parentNode para poder verficar verificarCartas()
+    if (primeiraCarta === '') {
+
+        target.parentNode.classList.add('rotacao')
+        primeiraCarta = target.parentNode
+        console.log(primeiraCarta)
+        
+        // Ele vai pegar a segunda carta e rotaciona-la e vai salvar o parentNode para poder verficar verificarCartas()
+    } else if (segundaCarta === '') {
+
+        target.parentNode.classList.add('rotacao')
+        segundaCarta = target.parentNode
+        console.log(segundaCarta)
+
+
+        // Function de verificaçao das cartas
+        verificarCartas()
+
+    }  
+}
 
 
 function verificarCartas() {
@@ -96,6 +158,7 @@ function verificarCartas() {
         primeiraCarta = ''
         segundaCarta = ''
 
+        endGame()
     } else {
 
         // Ação de falha entre as duas cartas
@@ -113,58 +176,15 @@ function verificarCartas() {
     }
 }
 
-function rotacaoCarta({ target }) {
+const fimDoJogo = document.querySelectorAll('.rotacao ')
 
-    // Ele ira procurar a div pai do elemento que foi clicado e adcionar a movimentaçao da carta
-    if (target.parentNode.className.includes('rotacao')) {
+function endGame(){
+    
+    if(fimDoJogo.length === cartasDaCaixa.length){
 
+      alert('Você ganhou')  
     }
-
-    // Ele vai pegar a primeira carta e rotaciona-la e vai salvar o parentNode para poder verficar verificarCartas()
-    if (primeiraCarta === '') {
-
-        target.parentNode.classList.add('rotacao')
-        primeiraCarta = target.parentNode
-
-        // Ele vai pegar a segunda carta e rotaciona-la e vai salvar o parentNode para poder verficar verificarCartas()
-    } else if (segundaCarta === '') {
-
-        target.parentNode.classList.add('rotacao')
-        segundaCarta = target.parentNode
-
-        // Function de verificaçao das cartas
-        verificarCartas()
-
-    }
-
 }
 
-// Function para criar cartas
-function cartasCriadas(imagensSelecionadas) {
 
-    // Criaçao dos elementos dentro da div do html
-    const cards = document.createElement('div')
-    const front = document.createElement('div')
-    const back = document.createElement('div')
 
-    // Colocando nome de class para ultiliza-la e dar estilo
-    cards.className = 'cards'
-    front.className = 'front card'
-    back.className = 'back '
-
-    // Adicionando imagens as faces da carta
-    front.style.backgroundImage = `url(../.Imagens/pokebola.png)`
-    back.style.backgroundImage = `url(../.Imagens/${imagensSelecionadas})`
-
-    // Fazendo transformaçao de divs em filhos da div 'cards'
-    cards.appendChild(front)
-    cards.appendChild(back)
-
-    // Ultilizar o evento para conseguir clicar em uma carta
-    cards.addEventListener('click', rotacaoCarta)
-    // Acrescentando atributos nas imagens para poder verificar se são iguais
-    cards.setAttribute('data-imagensSelecionada', imagensSelecionadas)
-
-    // Transformandno a div 'cards' em uma div filha
-    containerDasCartas.appendChild(cards)
-}
