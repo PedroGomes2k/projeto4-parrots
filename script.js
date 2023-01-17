@@ -10,14 +10,13 @@ let numeroCarta = ''
 let cartasDaCaixa = []
 
 const imagensCartas = [
-    'bobrossparrot.gif',
-    'explodyparrot.gif',
-    'fiestaparrot.gif',
-    'metalparrot.gif',
-    'revertitparrot.gif',
-    'tripletsparrot.gif',
-    'unicornparrot.gif'
-
+    'pikachu.png',
+    'snorlax.png',
+    'charizard.png',
+    'squedel.png',
+    'lucario.png',
+    'infernape.png',
+    'onix.png'
 ]
 
 function numerosPares() {
@@ -147,16 +146,16 @@ function cartasCriadas(imagensSelecionadas) {
     const cards = document.createElement('div')
     const front = document.createElement('div')
     const back = document.createElement('div')
-    
+
     // Colocando nome de class para ultiliza-la e dar estilo
     cards.className = 'cards'
     front.className = 'front card'
     back.className = 'back '
 
     // Adicionando imagens as faces da carta
-    front.style.backgroundImage = `url(../Imagens/back.png)`
+    front.style.backgroundImage = `url(../Imagens/pokebola.png)`
     back.style.backgroundImage = `url(../Imagens/${imagensSelecionadas})`
-    
+
     // Fazendo transformaçao de divs em filhos da div 'cards'
     cards.appendChild(front)
     cards.appendChild(back)
