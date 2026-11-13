@@ -8,6 +8,13 @@ let numeroCarta = ''
 
 let cartasDaCaixa = []
 
+// Timer: começa na primeira carta virada e para quando o último par é encontrado
+const tempoNaTela = document.querySelector('.tempo')
+
+let tempoInicio = 0
+
+let intervaloTimer = ''
+
 
 const imagensCartas = [
     'pikachu.png',
@@ -129,6 +136,11 @@ function rotacaoCarta({ target }) {
     }
 
 
+    // Na primeira carta do jogo o timer começa a contar
+    if (tempoInicio === 0) {
+        iniciarTimer()
+    }
+
     // Ele vai pegar a primeira carta e rotaciona-la e vai salvar o parentNode para poder verficar verificarCartas()
     if (primeiraCarta === '') {
 
@@ -188,9 +200,41 @@ function endGame(){
 
     if(fimDoJogo.length === cartasDaCaixa.length){
 
+      const tempoFinal = pararTimer()
+
       // Espera a animação da última carta terminar antes do aviso
-      setTimeout(() => alert('Você ganhou'), 500)
+      setTimeout(() => alert(`Você ganhou em ${formatarTempo(tempoFinal)}!`), 500)
     }
+}
+
+// Transforma os milissegundos em minutos:segundos.décimos (ex: 01:23.4)
+function formatarTempo(milissegundos) {
+
+    const minutos = Math.floor(milissegundos / 60000)
+    const segundos = Math.floor((milissegundos % 60000) / 1000)
+    const decimos = Math.floor((milissegundos % 1000) / 100)
+
+    return `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}.${decimos}`
+}
+
+function iniciarTimer() {
+
+    tempoInicio = Date.now()
+
+    // Atualiza o tempo na tela a cada décimo de segundo
+    intervaloTimer = setInterval(() => {
+        tempoNaTela.innerHTML = formatarTempo(Date.now() - tempoInicio)
+    }, 100)
+}
+
+function pararTimer() {
+
+    clearInterval(intervaloTimer)
+
+    const tempoFinal = Date.now() - tempoInicio
+    tempoNaTela.innerHTML = formatarTempo(tempoFinal)
+
+    return tempoFinal
 }
 
 
