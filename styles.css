@@ -1,35 +1,38 @@
 body {
     background-color: #EEF9BF;
-
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
 }
 
 
 .cabecalho {
-    width: 1110px;
-    height: 63px;
-    margin: 18px auto;
+    max-width: 1110px;
+    margin: 24px auto 18px;
+    padding: 0 16px;
     color: #75B79E;
     text-align: center;
     font-size: 56px;
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
-    justify-content: center;
 }
 
 .containerPrincipal {
     width: 872px;
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
+    max-width: calc(100% - 32px);
+    margin: 0 auto 40px;
 }
 
+/* Container das cartas: a "mesa" com borda arredondada em volta das cartas */
 .containerCards {
-
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 20px;
+    justify-content: center;
+    gap: 24px;
+    padding: 32px 24px;
+    background-color: #F8FDE3;
+    border: 4px solid #75B79E;
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(117, 183, 158, 0.25);
 }
 
 .cards,
@@ -38,14 +41,18 @@ body {
     width: 117px;
     height: 146px;
     display: flex;
-    margin-bottom: 34px;
-    border-radius: 5px;
+    border-radius: 12px;
     position: relative;
     transform-style: preserve-3d;
 }
 
 .cards {
-    margin-left: 20px;
+    cursor: pointer;
+    transition: transform 0.3s linear;
+}
+
+.cards:hover {
+    transform: translateY(-4px);
 }
 
 
@@ -57,56 +64,61 @@ body {
     background-size: 120px;
     background-position: center ;
     z-index: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
- 
+
 .back {
     border: 1px solid #99CEA8;
     background-color: #A7E9AF;
     transform: rotateY(180deg);
     background-size: 135px;
     background-position: center 3px;
-    
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 
 .card {
-   
+
     background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     position: absolute;
-    
+
 }
 
 
-.rotacao {
+.rotacao,
+.rotacao:hover {
     transform: rotateY(180deg);
     transition: all 0.3s linear;
 }
 
-@media (max-width: 335px) {
+@media (max-width: 600px) {
 
     .cabecalho {
-
-        display: flex;
-        justify-content: center;
-        width: 312px;
-        text-align: center;
-
+        font-size: 32px;
+        margin: 20px auto 14px;
     }
 
     .containerCards {
-
-        width: 200px;
-        font-size: 36px;
-        justify-content: center;
-        margin-left: 50px;
-        margin-top: 200px;
-        flex-direction: column;
+        gap: 14px;
+        padding: 20px 12px;
+        border-radius: 22px;
     }
 
-    .cards {
+    .cards,
+    .front,
+    .back {
+        width: 84px;
+        height: 105px;
+    }
 
-        margin: auto;
-        margin-bottom: 30px;
+    .front {
+        background-size: 86px;
+    }
+
+    .back {
+        background-size: 97px;
+        background-position: center 2px;
     }
 }
