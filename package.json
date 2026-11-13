@@ -1,0 +1,12 @@
+{
+  "name": "projeto4-parrots",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.9.0"
+  }
+}

@@ -202,8 +202,8 @@ function endGame(){
 
       const tempoFinal = pararTimer()
 
-      // Espera a animação da última carta terminar antes do aviso
-      setTimeout(() => alert(`Você ganhou em ${formatarTempo(tempoFinal)}!`), 500)
+      // Espera a animação da última carta terminar e confere se bateu o recorde
+      setTimeout(() => verificarRecorde(tempoFinal), 600)
     }
 }
 
@@ -239,3 +239,153 @@ function pararTimer() {
 
 
 
+
+
+// ------------------------------------------------------------------
+// Recordes: ficam salvos online (API em api/recordes.js, na Vercel),
+// um recorde para cada quantidade de cartas
+// ------------------------------------------------------------------
+
+const modalRecordes = document.querySelector('.modalRecordes')
+const mensagemRecordes = document.querySelector('.mensagemRecordes')
+const listaRecordes = document.querySelector('.listaRecordes')
+
+function buscarRecordes() {
+
+    return fetch('api/recordes').then((resposta) => {
+
+        if (!resposta.ok) {
+            throw new Error('API de recordes indisponível')
+        }
+
+        return resposta.json()
+    })
+}
+
+function salvarRecorde(nome, tempo) {
+
+    return fetch('api/recordes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartas: cartasDaCaixa.length, nome: nome, tempo: tempo })
+    }).then((resposta) => {
+
+        if (!resposta.ok) {
+            throw new Error('Não foi possível salvar o recorde')
+        }
+
+        return resposta.json()
+    })
+}
+
+function verificarRecorde(tempoFinal) {
+
+    const tempoTexto = formatarTempo(tempoFinal)
+    const cartas = cartasDaCaixa.length
+
+    buscarRecordes()
+        .then((recordes) => {
+
+            const recordeAtual = recordes[cartas]
+
+            // Não bateu o recorde: mostra o tempo e quem continua na frente
+            if (recordeAtual && recordeAtual.tempo <= tempoFinal) {
+                mostrarRecordes(recordes, `Você zerou em ${tempoTexto}! O recorde com ${cartas} cartas continua com ${recordeAtual.nome}.`)
+                return
+            }
+
+            // Bateu o recorde: pergunta o nome e salva
+            const nome = prompt(`🎉 Novo recorde! Você zerou ${cartas} cartas em ${tempoTexto}. Qual é o seu nome?`)
+
+            if (nome === null || nome.trim() === '') {
+                mostrarRecordes(recordes, `Você zerou em ${tempoTexto}! Sem nome, o recorde não foi salvo.`)
+                return
+            }
+
+            return salvarRecorde(nome.trim(), tempoFinal).then((resultado) => {
+
+                if (resultado.novoRecorde) {
+                    mostrarRecordes(resultado.recordes, `🎉 Parabéns, ${nome.trim()}! Novo recorde com ${cartas} cartas: ${tempoTexto}`)
+                } else {
+                    mostrarRecordes(resultado.recordes, `Alguém foi mais rápido agora há pouco! Você zerou em ${tempoTexto}.`)
+                }
+            })
+        })
+        .catch(() => {
+            // Sem a API (ex.: abrindo o arquivo direto no computador) o jogo continua funcionando
+            mostrarRecordes(null, `Você zerou em ${tempoTexto}!`)
+        })
+}
+
+function mostrarRecordes(recordes, mensagem) {
+
+    // textContent (e não innerHTML) para o nome digitado aparecer só como texto
+    mensagemRecordes.textContent = mensagem
+    listaRecordes.innerHTML = ''
+
+    if (recordes === null) {
+
+        const item = document.createElement('li')
+        item.className = 'semRecordes'
+        item.textContent = 'Não foi possível carregar os recordes agora.'
+        listaRecordes.appendChild(item)
+
+    } else {
+
+        [4, 6, 8, 10, 12, 14].forEach((quantidade) => {
+
+            const recorde = recordes[quantidade]
+
+            const item = document.createElement('li')
+            const textoCartas = document.createElement('span')
+            const textoNome = document.createElement('span')
+            const textoTempo = document.createElement('span')
+
+            textoCartas.className = 'quantidade'
+            textoNome.className = 'nome'
+            textoTempo.className = 'tempoRecorde'
+
+            textoCartas.textContent = `${quantidade} cartas`
+            textoNome.textContent = recorde ? recorde.nome : '—'
+            textoTempo.textContent = recorde ? formatarTempo(recorde.tempo) : 'sem recorde'
+
+            // Destaca a linha da quantidade de cartas que está sendo jogada
+            if (quantidade === cartasDaCaixa.length) {
+                item.classList.add('modoAtual')
+            }
+
+            item.appendChild(textoCartas)
+            item.appendChild(textoNome)
+            item.appendChild(textoTempo)
+            listaRecordes.appendChild(item)
+        })
+    }
+
+    modalRecordes.classList.remove('escondido')
+}
+
+function fecharRecordes() {
+    modalRecordes.classList.add('escondido')
+}
+
+// Botão 🏆 Recordes: mostra quem zerou mais rápido em cada modo
+document.querySelector('.botaoRecorde').addEventListener('click', () => {
+
+    mostrarRecordes({}, 'Carregando...')
+
+    buscarRecordes()
+        .then((recordes) => mostrarRecordes(recordes, 'Quem zerou mais rápido em cada quantidade de cartas:'))
+        .catch(() => mostrarRecordes(null, 'Recordes indisponíveis'))
+})
+
+document.querySelector('.fecharRecordes').addEventListener('click', fecharRecordes)
+
+// Clicar fora da caixa também fecha
+modalRecordes.addEventListener('click', (evento) => {
+    if (evento.target === modalRecordes) {
+        fecharRecordes()
+    }
+})
+
+// Jogar de novo: recarrega a página e pergunta a quantidade de cartas outra vez
+document.querySelector('.jogarDeNovo').addEventListener('click', () => location.reload())
