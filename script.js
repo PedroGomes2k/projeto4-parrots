@@ -100,8 +100,8 @@ function cartasCriadas(imagensSelecionadas) {
     back.className = 'back card '
 
     // Adicionando imagens as faces da carta
-    front.style.backgroundImage = `url(../Imagens/pokebola.png)`
-    back.style.backgroundImage = `url(../Imagens/${imagensSelecionadas})`
+    front.style.backgroundImage = `url(Imagens/pokebola.png)`
+    back.style.backgroundImage = `url(Imagens/${imagensSelecionadas})`
 
     // Fazendo transformaçao de divs em filhos da div 'cards'
     cards.appendChild(front)
@@ -118,11 +118,16 @@ function cartasCriadas(imagensSelecionadas) {
 
 function rotacaoCarta({ target }) {
 
-    // Ele ira procurar a div pai do elemento que foi clicado e adcionar a movimentaçao da carta
+    // Ele ira procurar a div pai do elemento que foi clicado: se a carta já estiver virada, não faz nada
     if (target.parentNode.className.includes('rotacao')) {
-
+        return
     }
-    
+
+    // Se já tem duas cartas viradas esperando a verificação, espera ela terminar
+    if (segundaCarta !== '') {
+        return
+    }
+
 
     // Ele vai pegar a primeira carta e rotaciona-la e vai salvar o parentNode para poder verficar verificarCartas()
     if (primeiraCarta === '') {
@@ -176,13 +181,15 @@ function verificarCartas() {
     }
 }
 
-const fimDoJogo = document.querySelectorAll('.rotacao ')
-
 function endGame(){
-    
+
+    // Pegando as cartas viradas na hora em que um par é encontrado
+    const fimDoJogo = document.querySelectorAll('.rotacao')
+
     if(fimDoJogo.length === cartasDaCaixa.length){
 
-      alert('Você ganhou')  
+      // Espera a animação da última carta terminar antes do aviso
+      setTimeout(() => alert('Você ganhou'), 500)
     }
 }
 
